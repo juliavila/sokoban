@@ -1,1 +1,8 @@
-<div></div>
+<div [ngClass]="{
+  'ground': tile.type === tileType.GROUND,
+  'wall': tile.type === tileType.WALL,
+  'haveBox': tile.boxHere,
+  'isMark': tile.isMark
+}">
+  <span class="cursor" [hidden]="!cursorHere"></span>
+</div>

@@ -1,3 +1,7 @@
-<div *ngFor="let line of tiles">
-  <app-tile *ngFor="let tile of line" [tile]="tile"></app-tile>
+<div *ngFor="let line of tiles; index as y">
+  <app-tile 
+    *ngFor="let tile of line; index as x" 
+    [tile]="tile" 
+    [cursorHere]="cursorHere(x, y)">
+  </app-tile>
 </div> 

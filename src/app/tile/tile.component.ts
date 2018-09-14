@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TileModule } from './tile.module';
+import { TileType } from '../shared/enums/tile-type.enum';
 
 @Component({
   selector: 'app-tile',
@@ -9,6 +10,9 @@ import { TileModule } from './tile.module';
 export class TileComponent implements OnInit {
 
   @Input() tile: TileModule;
+  @Input() cursorHere: boolean;
+
+  tileType = TileType;
 
   constructor() { }
 
