@@ -1,7 +1,8 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { TileModule } from '../tile/tile.module';
-import { TileType } from '../shared/enums/tile-type.enum';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { KEY_CODE } from '../shared/enums/key-code.enum';
+import { TileType } from '../shared/enums/tile-type.enum';
+import { TileModule } from '../tile/tile.module';
+import { Coordinate } from './../shared/modules/coordinate.module';
 
 @Component({
   selector: 'app-room',
@@ -11,13 +12,13 @@ import { KEY_CODE } from '../shared/enums/key-code.enum';
 export class RoomComponent implements OnInit {
 
   tiles: TileModule[][];
-  player: { x: number; y: number; };
+  cursor: Coordinate;
 
   constructor() { }
 
   ngOnInit() {
 
-    this.player = { x: 1, y: 1 };
+    this.cursor = new Coordinate(1, 1);
 
     this.tiles = [];
 
@@ -50,20 +51,35 @@ export class RoomComponent implements OnInit {
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
 
-    // TODO: tratrar key do evento
-    let action = [];
+    if (!Object.values(KEY_CODE).includes(event.keyCode)) return;
 
-    action[KEY_CODE.UP_ARROW]     = () =>{ this.player.x++ };
-    action[KEY_CODE.RIGHT_ARROW]  = () =>{ this.player.y++ };
-    action[KEY_CODE.DOWN_ARROW]   = () =>{ this.player.x-- };
-    action[KEY_CODE.LEFT_ARROW]   = () =>{ this.player.y-- };
-    
+    let coordinate = this.cursor;
+
+    let action = [];
+    action[KEY_CODE.UP_ARROW]    = () => coordinate.y--;
+    action[KEY_CODE.RIGHT_ARROW] = () => coordinate.x++;
+    action[KEY_CODE.DOWN_ARROW]  = () => coordinate.y++;
+    action[KEY_CODE.LEFT_ARROW]  = () => coordinate.x--;
+
     action[event.keyCode]();
-    console.log(this.player);
+
+    this.run(coordinate);
+  }
+
+  run(newCoordinete: Coordinate) {
+
+    if (this.freeTile()) {
+      this.cursor = newCoordinete;
+    }
+
+  }
+
+  freeTile() {
+    return true;
   }
 
   cursorHere(x: number, y: number): boolean {
-    return x === this.player.x && y === this.player.y;
+    return x === this.cursor.x && y === this.cursor.y;
   }
 
 }

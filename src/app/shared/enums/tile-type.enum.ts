@@ -1,4 +1,4 @@
 export enum TileType {
-  GROUND = "GROUND",
-  WALL = "WALL"
+  GROUND = 'GROUND',
+  WALL = 'WALL'
 }

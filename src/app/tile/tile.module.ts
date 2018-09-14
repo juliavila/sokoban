@@ -1,13 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { TileType } from '../shared/enums/tile-type.enum';
 
-@NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: []
-})
+@NgModule()
 export class TileModule {
   type: TileType;
   isMark: boolean;
