@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TileType } from '../shared/enums/tile-type.enum';
+import { TILE_TYPE } from '../shared/enums/tile-type.enum';
 import { TileModule } from './tile.module';
 
 @Component({
@@ -12,7 +12,7 @@ export class TileComponent implements OnInit {
   @Input() tile: TileModule;
   @Input() cursorHere: boolean;
 
-  tileType = TileType;
+  tileType = TILE_TYPE;
 
   constructor() { }
 
