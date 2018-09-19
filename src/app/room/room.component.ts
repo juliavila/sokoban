@@ -79,6 +79,8 @@ export class RoomComponent implements OnInit {
     this.cursor = coordinate;
     this.totalMoves++;
 
+    console.log(this.checkWin());
+
     return true;
   }
 
@@ -118,6 +120,10 @@ export class RoomComponent implements OnInit {
 
   cursorHere(x: number, y: number): boolean {
     return x === this.cursor.x && y === this.cursor.y;
+  }
+
+  checkWin(): boolean {
+    return this.tiles.every( line => !line.some( tile => (tile.isMark && !tile.boxHere) ) );
   }
 
 }
