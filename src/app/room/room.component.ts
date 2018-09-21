@@ -39,14 +39,6 @@ export class RoomComponent implements OnInit {
       [ {...wall}, {...ground}, {...ground}, {...ground}, {...ground}, {...wall} ],
       [ {...wall}, {...wall}, {...wall}, {...wall}, {...wall}, {...wall} ]
     ];
-
-    // for (let i = 0; i < 10; i++) {
-    //   this.tiles[i] = [];
-    //   for (let j = 0; j < 10; j++) {
-    //     this.tiles[i][j] = new TileModule();
-    //   }
-    // }
-
   }
 
   @HostListener('window:keyup', ['$event'])
