@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TILE_TYPE } from '../shared/enums/tile-type.enum';
-import { TileModule } from './tile.module';
+import { TileModule } from '../shared/modules/tile.module';
 
 @Component({
   selector: 'app-tile',

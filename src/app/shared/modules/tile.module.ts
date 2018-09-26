@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { TILE_TYPE } from '../shared/enums/tile-type.enum';
+import { TILE_TYPE } from '../enums/tile-type.enum';
 
 @NgModule()
 export class TileModule {

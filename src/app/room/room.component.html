@@ -1,4 +1,5 @@
-<div *ngFor="let line of tiles; index as y">
+
+<div *ngFor="let line of room.tiles; index as y">
   <app-tile
     *ngFor="let tile of line; index as x"
     [tile]="tile"

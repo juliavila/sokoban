@@ -1,9 +1,10 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { KEY_CODE } from '../shared/enums/key-code.enum';
 import { TILE_TYPE } from '../shared/enums/tile-type.enum';
 import { DIRECTION } from '../shared/enums/direction.enum';
-import { TileModule } from '../tile/tile.module';
-import { Coordinate } from './../shared/modules/coordinate.module';
+import { TileModule } from '../shared/modules/tile.module';
+import { Coordinate } from '../shared/modules/coordinate.module';
+import { RoomModule } from '../shared/modules/room.module';
 
 @Component({
   selector: 'app-room',
@@ -12,33 +13,29 @@ import { Coordinate } from './../shared/modules/coordinate.module';
 })
 export class RoomComponent implements OnInit {
 
-  tiles: TileModule[][];
+  @Input() room: RoomModule;
+  @Output() totalMoves: EventEmitter<number> = new EventEmitter();
+  @Output() win: EventEmitter<boolean> = new EventEmitter();
+
   cursor: Coordinate;
-  totalMoves: number;
+
+  private _counter: number;
+
+  public get counter(): number {
+    return this._counter;
+  }
+
+  public set counter(value) {
+    this._counter = value;
+    this.totalMoves.emit(value);
+  }
 
   constructor() { }
 
   ngOnInit() {
-
     this.cursor = new Coordinate(1, 1);
-    this.totalMoves = 0;
-
-    this.tiles = [];
-
-    let wall          = new TileModule (TILE_TYPE.WALL, false, false, false);
-    let ground        = new TileModule (TILE_TYPE.GROUND, false, false, false);
-    let groundBox     = new TileModule (TILE_TYPE.GROUND, false, false, true);
-    let groundMark    = new TileModule (TILE_TYPE.GROUND, true, false, false);
-    let groundMarkBox = new TileModule (TILE_TYPE.GROUND, true, false, true);
-
-    this.tiles = [
-      [ {...wall}, {...wall}, {...wall}, {...wall}, {...wall}, {...ground}],
-      [ {...wall}, {...ground}, {...ground}, {...ground}, {...wall}, {...wall} ],
-      [ {...wall}, {...groundMark}, {...groundMarkBox}, {...groundBox}, {...ground}, {...wall} ],
-      [ {...wall}, {...ground}, {...ground}, {...wall}, {...ground}, {...wall}],
-      [ {...wall}, {...ground}, {...ground}, {...ground}, {...ground}, {...wall} ],
-      [ {...wall}, {...wall}, {...wall}, {...wall}, {...wall}, {...wall} ]
-    ];
+    this.counter = 0;
+    this.win.emit(false);
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -69,23 +66,21 @@ export class RoomComponent implements OnInit {
     if (!this.freeTile(coordinate)) return false;
 
     this.cursor = coordinate;
-    this.totalMoves++;
-
-    console.log(this.checkWin());
+    this.counter++;
 
     return true;
   }
 
   pushBox(coordinate: Coordinate, direction): boolean {
 
-    if ( !this.tiles[coordinate.y][coordinate.x].boxHere ) return false;
+    if ( !this.room.tiles[coordinate.y][coordinate.x].boxHere ) return false;
 
     let boxNewCoordinate = this.nextCoordinate(coordinate, direction);
       
     if ( !this.freeTile(boxNewCoordinate) ) return false;
 
-    this.tiles[coordinate.y][coordinate.x].boxHere = false;
-    this.tiles[boxNewCoordinate.y][boxNewCoordinate.x].boxHere = true;
+    this.room.tiles[coordinate.y][coordinate.x].boxHere = false;
+    this.room.tiles[boxNewCoordinate.y][boxNewCoordinate.x].boxHere = true;
     this.moveCursor(coordinate);
 
     return true;
@@ -106,7 +101,7 @@ export class RoomComponent implements OnInit {
   }
 
   freeTile(coordinate: Coordinate) {
-    let tile = this.tiles[coordinate.y][coordinate.x];
+    let tile = this.room.tiles[coordinate.y][coordinate.x];
     return tile.type === TILE_TYPE.GROUND && !tile.boxHere;
   }
 
@@ -115,7 +110,10 @@ export class RoomComponent implements OnInit {
   }
 
   checkWin(): boolean {
-    return this.tiles.every( line => !line.some( tile => (tile.isMark && !tile.boxHere) ) );
+    let win = this.room.tiles.every( line => !line.some( tile => (tile.isMark && !tile.boxHere) ) );
+    this.win.emit(win);
+    return win;
+    return true;
   }
 
 }

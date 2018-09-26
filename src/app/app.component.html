@@ -5,23 +5,27 @@
   <div class="header">
     <span>Level #1</span>
     <div class="button-group">
-      <button>⤺ ↶</button>    
-      <button>⭯</button>
+      <button title="reverse">⮌</button>    
+      <button title="reestart">⭯</button>
     </div>
   </div>
   
   <div class="game">
-    <app-room></app-room>
+    <app-room 
+      [room]="actualRoom" 
+      (totalMoves)="totalMoves" 
+      (win)="win">
+    </app-room>
   </div>
-
-  <span>YOU WIN</span>
   
   <div class="leavel-selector">
     <span>0 moves</span>
     <div class="button-group">
-      <button>🠬</button>
-      <button>🠮</button>
+      <button title="previous level">🠬</button>
+      <button title="next level">🠮</button>
     </div>
   </div>
-
+  
+  <span *ngIf="true">YOU WIN</span>
+  
 </div>
