@@ -3,6 +3,7 @@ import { TileModule } from './shared/modules/tile.module';
 import { TILE_TYPE } from './shared/enums/tile-type.enum';
 import { RoomModule } from './shared/modules/room.module';
 import { Coordinate } from './shared/modules/coordinate.module';
+import { RoomsService } from './rooms.service';
 
 @Component({
   selector: 'app-root',
@@ -12,30 +13,21 @@ import { Coordinate } from './shared/modules/coordinate.module';
 
 export class AppComponent implements OnInit{
 
-  actualRoom: RoomModule;
+  room: RoomModule;
   totalMoves: number;
   win: boolean;
 
+  constructor(public roomsService: RoomsService) {}
+
   ngOnInit() {
-    this.actualRoom = new RoomModule();
+    this.room = this.roomsService.getCurrentRoom();
+  }
 
-    let wall          = new TileModule (TILE_TYPE.WALL, false, false, false);
-    let ground        = new TileModule (TILE_TYPE.GROUND, false, false, false);
-    let groundBox     = new TileModule (TILE_TYPE.GROUND, false, false, true);
-    let groundMark    = new TileModule (TILE_TYPE.GROUND, true, false, false);
-    let groundMarkBox = new TileModule (TILE_TYPE.GROUND, true, false, true);
+  next() {
+    this.room = this.roomsService.getNextRoom();
+  }
 
-    this.actualRoom = { 
-      name: "1 - Genesis",
-      tiles: [
-        [ {...wall}, {...wall}, {...wall}, {...wall}, {...wall}, {...ground}],
-        [ {...wall}, {...ground}, {...ground}, {...ground}, {...wall}, {...wall} ],
-        [ {...wall}, {...groundMark}, {...groundMarkBox}, {...groundBox}, {...ground}, {...wall} ],
-        [ {...wall}, {...ground}, {...ground}, {...wall}, {...ground}, {...wall}],
-        [ {...wall}, {...ground}, {...ground}, {...ground}, {...ground}, {...wall} ],
-        [ {...wall}, {...wall}, {...wall}, {...wall}, {...wall}, {...wall} ]
-      ],
-      cursor: new Coordinate(1, 1)
-    };
+  previous() {
+    this.room = this.roomsService.getPreviousRoom();
   }
 }

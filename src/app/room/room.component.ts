@@ -13,20 +13,23 @@ import * as _ from 'lodash';
 })
 export class RoomComponent implements OnInit {
 
-  @Input() room: RoomModule;
+  private _room: RoomModule;
+  @Input() set room(value: RoomModule) {
+    this._room = value;
+    this.gameInitializer();
+  }
 
   @Output() totalMoves: EventEmitter<number> = new EventEmitter();
   @Output() win: EventEmitter<boolean> = new EventEmitter();
 
   gameRoom: RoomModule;
   roomHistory = new Array<RoomModule>();
-  private _counter: number;
 
+  private _counter: number;
   public get counter(): number {
     return this._counter;
   }
-
-  public set counter(value) {
+  public set counter(value: number) {
     this._counter = value;
     this.totalMoves.emit(value);
   }
@@ -120,7 +123,7 @@ export class RoomComponent implements OnInit {
   // Init config
 
   gameInitializer(): void {
-    this.gameRoom = _.cloneDeep(this.room);
+    this.gameRoom = _.cloneDeep(this._room);
     this.roomHistory = [];
     this.counter = 0;
     this.win.emit(false);

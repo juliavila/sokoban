@@ -4,7 +4,7 @@
   
   <div class="game">
     <app-room 
-      [room]="actualRoom" 
+      [room]="room" 
       (totalMoves)="totalMoves = $event" 
       (win)="win = $event">
     </app-room>
@@ -13,8 +13,8 @@
   <div class="leavel-selector">
     <span>{{ totalMoves }} moves</span>
     <div class="button-group">
-      <button title="previous level">🠬</button>
-      <button title="next level">🠮</button>
+      <button (click)="previous()" title="previous level">🠬</button>
+      <button (click)="next()" title="next level">🠮</button>
     </div>
   </div>
   
