@@ -7,17 +7,20 @@ div {
 }
 
 .ground {
-  background: orange;
+  background: url(./../../assets/Ground/ground_03.png);
+  background-size: cover;
 }
 
 .wall {
-  background: gray;
+  background: url(./../../assets/Blocks/block_03.png), url(./../../assets/Ground/ground_03.png);
+  background-size: cover;
 }
 
 .haveBox::before {
   content: "";
   position: absolute;
-  background: darkblue;
+  background: url(./../../assets/Crates/crate_02.png);
+  background-size: cover;
   height: 40px;
   width: 40px;
   z-index: 1;
@@ -26,20 +29,22 @@ div {
 .isMark::after {
   content: "";
   position: absolute;
-  background: greenyellow;
-  height: 10px;
-  width: 10px;
-  border-radius: 50%;
+  background: url(./../../assets/Environment/environment_06.png);
+  background-size: cover;
+  height: 40px;
+  width: 40px;
 }
 
 .isMark.haveBox::before {
-  background: blue;
+  background: url(./../../assets/Crates/crate_27.png);
+  background-size: cover;
 }
 
 .cursor {
   position: absolute;
-  background: purple;
-  height: 30px;
-  width: 30px;
+  background: url(./../../assets/Player/player_03.png);
+  background-size: cover;
+  height: 40px;
+  width: 40px;
   z-index: 2;
 }

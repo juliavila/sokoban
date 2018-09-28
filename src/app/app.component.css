@@ -1,9 +1,3 @@
-@import url('https://fonts.googleapis.com/css?family=Fredoka+One');
-
-* {
-  font-family: 'Fredoka One', cursive;
-}
-
 .content {
   display: flex;
   flex-direction: column;

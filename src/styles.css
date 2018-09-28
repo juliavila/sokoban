@@ -1,4 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Fredoka+One');
+
+* {
+  font-family: 'Fredoka One', cursive;
+}
 
 button {
   display: flex;
