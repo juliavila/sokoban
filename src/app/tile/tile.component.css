@@ -7,19 +7,19 @@ div {
 }
 
 .ground {
-  background: url(./../../assets/Ground/ground_03.png);
+  background: url(./../../assets/ground.png);
   background-size: cover;
 }
 
 .wall {
-  background: url(./../../assets/Blocks/block_03.png), url(./../../assets/Ground/ground_03.png);
+  background: url(./../../assets/block.png), url(./../../assets/ground.png);
   background-size: cover;
 }
 
 .haveBox::before {
   content: "";
   position: absolute;
-  background: url(./../../assets/Crates/crate_02.png);
+  background: url(./../../assets/crate.png);
   background-size: cover;
   height: 40px;
   width: 40px;
@@ -29,20 +29,20 @@ div {
 .isMark::after {
   content: "";
   position: absolute;
-  background: url(./../../assets/Environment/environment_06.png);
+  background: url(./../../assets/environment.png);
   background-size: cover;
   height: 40px;
   width: 40px;
 }
 
 .isMark.haveBox::before {
-  background: url(./../../assets/Crates/crate_27.png);
+  background: url(./../../assets/crate-environment.png);
   background-size: cover;
 }
 
 .cursor {
   position: absolute;
-  background: url(./../../assets/Player/player_03.png);
+  background: url(./../../assets/player.png);
   background-size: cover;
   height: 40px;
   width: 40px;
