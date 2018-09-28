@@ -1,8 +1,16 @@
+<div class="header">
+  <span>Level: {{ gameRoom.name }}</span>
+  <div class="button-group">
+    <button title="reverse" (click)="undo()" [disabled]="!roomHistory.length">⮌</button>    
+    <button title="restart" (click)="gameInitializer()">⭯</button>
+  </div>
+</div>
 
-<div *ngFor="let line of room.tiles; index as y">
+<div class="room-line" *ngFor="let line of gameRoom.tiles; index as y">
   <app-tile
     *ngFor="let tile of line; index as x"
     [tile]="tile"
     [cursorHere]="cursorHere(x, y)">
   </app-tile>
 </div>
+

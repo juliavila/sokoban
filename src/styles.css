@@ -1,1 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+
+button {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: 2px solid #4CAF50;
+  color: #4CAF50;
+  border-radius: 4px;
+  transition-duration: 0.15s;
+  padding: 0 10px 4px 10px;
+  margin-left: 5px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+button:disabled {
+  color: gray;
+  border-color: gray;
+}
+button:disabled:hover {
+  background: none;
+}
+
+.button-group {
+  display: flex;
+}

@@ -12,9 +12,10 @@ import { TileComponent } from './tile/tile.component';
     TileComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    
   ],
-  providers: [],
+  providers: [ ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

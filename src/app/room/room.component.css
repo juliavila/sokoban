@@ -1,4 +1,13 @@
-div {
+.room-line{
   display: flex;
   justify-content: center;
 }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+  padding-bottom: 10px;
+}
+

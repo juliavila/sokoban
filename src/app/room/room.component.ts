@@ -2,9 +2,9 @@ import { Component, HostListener, OnInit, Input, Output, EventEmitter } from '@a
 import { KEY_CODE } from '../shared/enums/key-code.enum';
 import { TILE_TYPE } from '../shared/enums/tile-type.enum';
 import { DIRECTION } from '../shared/enums/direction.enum';
-import { TileModule } from '../shared/modules/tile.module';
 import { Coordinate } from '../shared/modules/coordinate.module';
 import { RoomModule } from '../shared/modules/room.module';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-room',
@@ -14,11 +14,12 @@ import { RoomModule } from '../shared/modules/room.module';
 export class RoomComponent implements OnInit {
 
   @Input() room: RoomModule;
+
   @Output() totalMoves: EventEmitter<number> = new EventEmitter();
   @Output() win: EventEmitter<boolean> = new EventEmitter();
 
-  cursor: Coordinate;
-
+  gameRoom: RoomModule;
+  roomHistory = new Array<RoomModule>();
   private _counter: number;
 
   public get counter(): number {
@@ -33,9 +34,7 @@ export class RoomComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.cursor = new Coordinate(1, 1);
-    this.counter = 0;
-    this.win.emit(false);
+    this.gameInitializer();
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -54,18 +53,21 @@ export class RoomComponent implements OnInit {
   
   run(direction: DIRECTION) {
 
-    let newCoordinate: Coordinate = this.nextCoordinate(this.cursor, direction);
+    let newCoordinate: Coordinate = this.nextCoordinate(this.gameRoom.cursor, direction);
     
-    if ( this.moveCursor(newCoordinate) ) return;
-    
-    this.pushBox(newCoordinate, direction);
+    let roomCopy = _.cloneDeep(this.gameRoom);
+
+    if ( this.moveCursor(newCoordinate) || this.pushBox(newCoordinate, direction) ){
+      this.saveHistory(roomCopy);
+      this.checkWin();
+    }
 
   }
 
   moveCursor(coordinate: Coordinate): boolean {
     if (!this.freeTile(coordinate)) return false;
 
-    this.cursor = coordinate;
+    this.gameRoom.cursor = coordinate;
     this.counter++;
 
     return true;
@@ -73,14 +75,14 @@ export class RoomComponent implements OnInit {
 
   pushBox(coordinate: Coordinate, direction): boolean {
 
-    if ( !this.room.tiles[coordinate.y][coordinate.x].boxHere ) return false;
+    if ( !this.gameRoom.tiles[coordinate.y][coordinate.x].boxHere ) return false;
 
     let boxNewCoordinate = this.nextCoordinate(coordinate, direction);
       
     if ( !this.freeTile(boxNewCoordinate) ) return false;
 
-    this.room.tiles[coordinate.y][coordinate.x].boxHere = false;
-    this.room.tiles[boxNewCoordinate.y][boxNewCoordinate.x].boxHere = true;
+    this.gameRoom.tiles[coordinate.y][coordinate.x].boxHere = false;
+    this.gameRoom.tiles[boxNewCoordinate.y][boxNewCoordinate.x].boxHere = true;
     this.moveCursor(coordinate);
 
     return true;
@@ -101,19 +103,40 @@ export class RoomComponent implements OnInit {
   }
 
   freeTile(coordinate: Coordinate) {
-    let tile = this.room.tiles[coordinate.y][coordinate.x];
+    let tile = this.gameRoom.tiles[coordinate.y][coordinate.x];
     return tile.type === TILE_TYPE.GROUND && !tile.boxHere;
   }
 
   cursorHere(x: number, y: number): boolean {
-    return x === this.cursor.x && y === this.cursor.y;
+    return x === this.gameRoom.cursor.x && y === this.gameRoom.cursor.y;
   }
 
   checkWin(): boolean {
-    let win = this.room.tiles.every( line => !line.some( tile => (tile.isMark && !tile.boxHere) ) );
+    let win = this.gameRoom.tiles.every( line => !line.some( tile => (tile.isMark && !tile.boxHere) ) );
     this.win.emit(win);
     return win;
-    return true;
+  }
+
+  // Init config
+
+  gameInitializer(): void {
+    this.gameRoom = _.cloneDeep(this.room);
+    this.roomHistory = [];
+    this.counter = 0;
+    this.win.emit(false);
+  }
+
+  undo(): void { 
+    if (!this.roomHistory.length) return;
+
+    this.gameRoom = this.roomHistory.pop(); 
+  }
+
+  saveHistory(room: RoomModule, limit: number = 5) {
+    this.roomHistory.push(room);
+    
+    if (this.roomHistory.length > limit)
+      this.roomHistory = this.roomHistory.slice(this.roomHistory.length - limit);
   }
 
 }
