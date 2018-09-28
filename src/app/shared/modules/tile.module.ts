@@ -5,10 +5,9 @@ import { TILE_TYPE } from '../enums/tile-type.enum';
 export class TileModule {
   type: TILE_TYPE;
   isMark: boolean;
-  cursorHere: boolean;
   boxHere: boolean;
 
-  constructor(type: TILE_TYPE, isMark: boolean, cursorHere: boolean, boxHere: boolean) {
+  constructor(type: TILE_TYPE, isMark: boolean, boxHere: boolean) {
     this.type = type;
     this.isMark = isMark;
     this.boxHere = boxHere;

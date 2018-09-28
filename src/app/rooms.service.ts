@@ -15,11 +15,11 @@ export class RoomsService {
 
   constructor() { 
 
-    let wall          = new TileModule (TILE_TYPE.WALL, false, false, false);
-    let ground        = new TileModule (TILE_TYPE.GROUND, false, false, false);
-    let groundBox     = new TileModule (TILE_TYPE.GROUND, false, false, true);
-    let groundMark    = new TileModule (TILE_TYPE.GROUND, true, false, false);
-    let groundMarkBox = new TileModule (TILE_TYPE.GROUND, true, false, true);
+    let wall          = new TileModule (TILE_TYPE.WALL, false, false);
+    let ground        = new TileModule (TILE_TYPE.GROUND, false, false);
+    let groundBox     = new TileModule (TILE_TYPE.GROUND, false, true);
+    let groundMark    = new TileModule (TILE_TYPE.GROUND, true, false);
+    let groundMarkBox = new TileModule (TILE_TYPE.GROUND, true, true);
 
     this.rooms.push( { 
       name: "1 - Genesis",
